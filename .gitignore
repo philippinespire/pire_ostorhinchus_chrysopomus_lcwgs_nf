@@ -1,1 +1,8 @@
+# Generated scheduler logs
+/logs/**/*.out
+/logs/**/*.err
+
 nf-pipelines/
+
+# Local NCBI reference genome files
+/data/reference/GCA_049176735.1/

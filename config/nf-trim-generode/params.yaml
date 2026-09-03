@@ -1,0 +1,19 @@
+samplesheet: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/config/nf-trim-generode/samplesheet.csv"
+indir: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/symlinks"
+outdir: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/results"
+reference: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1/GCA_049176735.1.fasta"
+
+historical_era: "historical"
+historical_mapper: "aln"
+
+run_repeatmasking: true
+run_historical_fastqc: true
+run_historical_mapdamage: true
+run_historical_amber: true
+run_modern_amber: true
+
+amber_script: "/archive/carpenterlab/pire/softwares/AMBERv2/AMBER"
+
+bwa_threads: 4
+bam_q: 25
+trimlength: 85

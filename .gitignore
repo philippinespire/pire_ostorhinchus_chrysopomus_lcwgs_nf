@@ -6,3 +6,12 @@ nf-pipelines/
 
 # Local NCBI reference genome files
 /data/reference/GCA_049176735.1/
+
+# Local FASTQ symlinks
+/data/symlinks/
+
+# Nextflow runtime files
+/.nextflow/
+/.nextflow.log*
+/logs/nf_trim_generode/*.log
+/reports/nf_trim_generode/

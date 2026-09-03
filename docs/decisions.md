@@ -12,6 +12,28 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-03 — Independent FASTQ inputs selected
+
+- **Decision:** Exclude `1st_sequencing_run/fq_raw` and use paired FASTQs from the second, third, and fourth sequencing runs. Exclude the `Undetermined` pairs from runs 2 and 4.
+- **Rationale:** Run 1 is an archival duplicate of data also present in run 2, not an independent sequencing run. Retaining it would double-count reads.
+- **Evidence:** SLURM audit job `6744487` compared all 184 run-1 R1/R2 pairs byte-for-byte with their matched run-2 pairs: 184 were identical, with 0 different pairs, unmatched pairs, multiple matches, missing mates, or comparison errors.
+- **Retained inputs:** 529 paired FASTQ occurrences: run 2 has 196, run 3 has 88, and run 4 has 245. These represent 278 biological fish: 101 historical (`ACan`, `ACat`, and `ATum`) and 177 modern (`CBur`, `CCat`, and `CTum`).
+- **Population totals:** `ACan` 24, `ACat` 41, `ATum` 36, `CBur` 64, `CCat` 63, and `CTum` 50.
+- **Repeated observations:** Thirty-three fish occur in one independent sequencing run and 245 occur in two. Six fish have an additional independently barcoded run-2 library and therefore have three retained occurrences: `Och-ACat_007`, `Och-ACat_009`, `Och-ACat_015`, `Och-ACat_032`, `Och-ACat_039`, and `Och-ATum_033`.
+- **Identity handling:** Pipeline sample IDs contain exactly three underscore-delimited fields. The first field is the biological fish ID, allowing independently mapped library/run occurrences to be merged by biological fish.
+- **Affected files:** `manifests/fastq_manifest.tsv`, `metadata/samples_master.csv`, `config/nf-trim-generode/samplesheet.csv`, `data/symlinks/`, and the FASTQ manifest/audit scripts.
+- **Analyst:** `tburris`
+
+### 2026-09-03 — nf-trim-generode execution configuration pinned
+
+- **Decision:** Run `nf-trim-generode` from commit `7875891fc158ef55b35007fb298c2f2cd6ee600e` using its `standard` SLURM profile and Nextflow `23.10.1`.
+- **Parameters:** Use `bwa aln` for initial historical mapping, mapping-quality threshold `25`, four BWA threads, and fallback trim length `85`. Enable RepeatModeler/RepeatMasker, historical FastQC, historical mapDamage, and historical and modern AMBER.
+- **Execution environment:** Use the personal Miniconda installation at `/home/tburris/miniconda3`, a shared Conda environment cache under the versioned analysis directory, and the pipeline’s configured Singularity containers.
+- **Storage:** Write Nextflow work files and published results beneath `/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/`.
+- **Validation:** The exact pipeline Conda environment dry run succeeded. Nextflow configuration resolution and workflow preview both completed with exit status `0`.
+- **Affected files:** `config/paths.yaml`, `config/nf-trim-generode/params.yaml`, `config/nf-trim-generode/nextflow.config`, and `workflows/01_nf_trim_generode/run_nf_trim_generode.sbatch`.
+- **Analyst:** `tburris`
+
 ### 2026-09-02 — Iridian GenBank assembly selected as mapping reference
 
 - **Decision:** Use the complete, unfiltered Iridian GenBank assembly `GCA_049176735.1` (`ASM4917673v1`) as the mapping reference for `nf-trim-generode`. The assembly isolate is `Och-CTum_014`.
@@ -23,7 +45,6 @@ Use this file to record decisions that affect reproducibility or biological inte
 
 ## Decisions still required
 
-- Historical and contemporary period definitions.
 - Rules for constructing the matched temporal sample set.
 - BAM QC and sample-exclusion thresholds.
 - ANGSD filtering and likelihood parameters.

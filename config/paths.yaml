@@ -1,0 +1,21 @@
+project_root: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf"
+
+pipeline_dir: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/nf-pipelines/nf-trim-generode"
+pipeline_commit: "7875891fc158ef55b35007fb298c2f2cd6ee600e"
+
+raw_data_root: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs"
+fastq_manifest: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/manifests/fastq_manifest.tsv"
+fastq_symlinks: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/symlinks"
+samplesheet: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/config/nf-trim-generode/samplesheet.csv"
+
+reference: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1/GCA_049176735.1.fasta"
+
+analysis_root: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1"
+work_dir: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/work"
+output_dir: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/results"
+conda_env_cache: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/conda/envs"
+conda_package_cache: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/conda/pkgs"
+
+miniconda: "/home/tburris/miniconda3"
+nextflow_module: "nextflow/23.10.1"
+amber_script: "/archive/carpenterlab/pire/softwares/AMBERv2/AMBER"

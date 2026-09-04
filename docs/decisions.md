@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-04 — Production Nextflow resume session made explicit
+
+- **Decision:** Allow the launcher to accept an explicit Nextflow resume target through `OCH_RESUME_TARGET`. Resume the current production analysis from session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`.
+- **Rationale:** A bare `-resume` selects the latest Nextflow session. The configuration preview created a newer session, causing the subsequent launcher to resume the preview rather than the production workflow.
+- **Evidence:** Jobs `6744733` and `6748756` share production session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`, which contains 1,247 reusable tasks. Preview run `prickly_mccarthy` created session `6517bcbb-75b6-472a-932c-0d4a83ef4a5b`. Job `6765768` resumed that preview session, reported zero cached tasks, and unnecessarily reran FASTP before child job `6765796` encountered node-memory allocation errors.
+- **Recovery:** Submit the launcher with `OCH_RESUME_TARGET=7e4b1069-96a8-4680-8bc9-3bab72e898c1`. This explicitly selects the production cache regardless of later previews.
+- **Affected files:** `workflows/01_nf_trim_generode/run_nf_trim_generode.sbatch` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-04 — BWA tasks configured for one memory-scaled retry
 
 - **Decision:** Retain four BWA threads and configure each `BWA.*` task for one automatic retry. The first attempt requests 32 GB and the retry requests 64 GB.

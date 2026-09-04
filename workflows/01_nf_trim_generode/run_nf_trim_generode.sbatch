@@ -148,6 +148,16 @@ echo "Reference: $och_reference"
 echo "Work directory: $och_work_dir"
 echo "Output directory: $och_output_dir"
 
+och_resume_target="${OCH_RESUME_TARGET:-}"
+och_resume_args=(-resume)
+
+if [[ -n "$och_resume_target" ]]; then
+    och_resume_args+=("$och_resume_target")
+    echo "Resume target: $och_resume_target"
+else
+    echo "Resume target: latest Nextflow session"
+fi
+
 nextflow -version
 conda --version
 
@@ -161,6 +171,6 @@ nextflow \
     -with-trace "${och_reports_dir}/trace-${SLURM_JOB_ID}.txt" \
     -with-timeline "${och_reports_dir}/timeline-${SLURM_JOB_ID}.html" \
     -with-dag "${och_reports_dir}/dag-${SLURM_JOB_ID}.html" \
-    -resume
+    "${och_resume_args[@]}"
 
 echo "nf-trim-generode launcher completed: $(date)"

@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-03 — BWA task memory increased after initial workflow failure
+
+- **Decision:** Override the upstream memory request for all `BWA.*` processes from 16 GB to 32 GB while retaining four CPUs.
+- **Rationale:** The upstream BWA commands pipe output through `samtools sort -m 4G -@ 4`. Because the sort memory limit is per thread and BWA and Samtools require additional memory, the original 16 GB process request was insufficient.
+- **Evidence:** Initial Nextflow driver job `6744733` failed after 18:06:23 when child job `6745565`, `BWA_MERGED_PASS1` for `OchACat040`, exited `1`. Its error was `samtools sort: couldn't allocate memory for bam_mem`. Nextflow consequently canceled 100 active tasks, including RepeatModeler job `6744735`. Before termination, 1,247 tasks completed successfully and remain eligible for Nextflow cache reuse.
+- **Recovery:** Resume the workflow using the existing work directory and `-resume`. Successfully completed tasks will be reused, while failed or canceled tasks will run again with the corrected BWA memory request.
+- **Affected files:** `config/nf-trim-generode/nextflow.config` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-03 — Independent FASTQ inputs selected
 
 - **Decision:** Exclude `1st_sequencing_run/fq_raw` and use paired FASTQs from the second, third, and fourth sequencing runs. Exclude the `Undetermined` pairs from runs 2 and 4.

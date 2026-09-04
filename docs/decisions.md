@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-04 — BWA tasks configured for one memory-scaled retry
+
+- **Decision:** Retain four BWA threads and configure each `BWA.*` task for one automatic retry. The first attempt requests 32 GB and the retry requests 64 GB.
+- **Rationale:** The resumed workflow failed in `bwa aln` while expanding its alignment-search stack. A retry with additional reserved node memory protects the workflow from a transient or short-lived allocation failure without changing alignment parameters.
+- **Evidence:** Driver job `6748756` failed because child job `6748759`, `BWA_MERGED_PASS1` for `OchACat012`, could not allocate 64 MiB in `gap_push`. Diagnostic jobs `6765716` and `6765759` found unlimited process limits, a 64-bit BWA 0.7.17 executable, no visible finite cgroup memory limit, and successful allocation and use of 5 GiB. The short allocation peak was not captured by `sacct`, demonstrating that its sampled `MaxRSS` value cannot exclude transient peaks.
+- **Recovery:** Resume from the existing Nextflow work directory. Cached tasks will be reused. A failed BWA task will restart once with 64 GB before Nextflow terminates the workflow.
+- **Affected files:** `config/nf-trim-generode/nextflow.config`, `docs/decisions.md`, and `workflows/01_nf_trim_generode/audit_bwa_memory_limits.sbatch`.
+- **Analyst:** `tburris`
+
 ### 2026-09-03 — BWA task memory increased after initial workflow failure
 
 - **Decision:** Override the upstream memory request for all `BWA.*` processes from 16 GB to 32 GB while retaining four CPUs.

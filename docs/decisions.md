@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-04 — BWA tasks isolated from shared-node memory pressure
+
+- **Decision:** Run all `BWA.*` processes with SLURM option `--exclusive=user` and exclude nodes `d1-w6420a-11` and `d6-w6420b-05`. Retain four CPUs, the 32/64 GB memory-scaled requests, and one automatic retry.
+- **Rationale:** Wahab's main partition schedules resources by CPU cores rather than memory. User-level node isolation allows this workflow's BWA jobs to share nodes with one another while preventing unrelated users' jobs from consuming untracked memory on those nodes.
+- **Evidence:** SLURM reports `SelectTypeParameters=CR_CORE`, unlimited per-node memory defaults, and `AllocMem=0` even on occupied nodes. Node `d6-w6420b-05` had only 8,490 MB free while 21 cores were allocated and hosted both earlier long-running BWA allocation failures. Node `d1-w6420a-11` produced repeated one-second signal-53 failures without creating process logs. SLURM 25.11.7 accepted a test-only `--exclusive=user` request with both nodes excluded.
+- **Recovery:** Resume the established production Nextflow session so successful tasks remain cached. Remaining BWA tasks will use user-isolated nodes and avoid the two suspect nodes.
+- **Affected files:** `config/nf-trim-generode/nextflow.config` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-04 — Production Nextflow resume session made explicit
 
 - **Decision:** Allow the launcher to accept an explicit Nextflow resume target through `OCH_RESUME_TARGET`. Resume the current production analysis from session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`.

@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-06 — RepeatMasker isolated after TRF memory failure
+
+- **Decision:** Exclude nodes `d1-w6420a-11` and `d6-w6420b-05` from every workflow process. Override `REPEAT_MASKER` to retain four CPUs, request 32 GB initially, use `--exclusive=user`, and retry once with 64 GB for memory-related exit codes.
+- **Rationale:** Wahab schedules the main partition by CPU cores rather than memory. RepeatMasker therefore received an 8 GB request without a corresponding physical-memory reservation and was placed on a severely memory-pressured node.
+- **Evidence:** Child job `6776793` ran `REPEAT_MASKER` on `d6-w6420b-05` and failed after 54 minutes with exit code `12`. Its TRF subprocess reported `Cannot allocate memory`. The job reached approximately batch 1,349 of 17,414, recorded 7,412,876 KB maximum RSS, and the node subsequently reported only 5,783 MB free with `AllocMem=0`. Nextflow canceled 36 other tasks. RepeatModeler job `6771488` completed successfully after 44:22:15 and remains cacheable.
+- **Recovery:** Resume production session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`. RepeatModeler and the 44 successfully completed child jobs should be reused from cache. RepeatMasker will restart on a user-isolated node.
+- **Affected files:** `config/nf-trim-generode/nextflow.config` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-04 — BWA tasks isolated from shared-node memory pressure
 
 - **Decision:** Run all `BWA.*` processes with SLURM option `--exclusive=user` and exclude nodes `d1-w6420a-11` and `d6-w6420b-05`. Retain four CPUs, the 32/64 GB memory-scaled requests, and one automatic retry.

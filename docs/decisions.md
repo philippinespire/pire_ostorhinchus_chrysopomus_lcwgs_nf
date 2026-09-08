@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-08 — Reference preparation switched from module ANGSD to Conda ANGSD
+
+- **Decision:** Override `PREP_REFERENCE_REPEAT` to disable its upstream `angsd/0.940` module directive and use the pipeline's existing Conda environment. Retain one CPU, increase the recorded memory request from 4 GB to 32 GB, and use user-level node isolation.
+- **Rationale:** Wahab's `angsd/0.940` module requires `container_env/0.1` and exposes ANGSD through `crun angsd`, while the upstream process directly executes `angsd`. The pipeline Conda environment already provides a directly executable ANGSD 0.940 and therefore requires no process-script modification.
+- **Evidence:** Child job `6777776`, `PREP_REFERENCE_REPEAT`, failed after three seconds with exit code `1` before its command executed because Lmod could not load `angsd/0.940`. The cached pipeline environment contains a functional ANGSD `0.940-dirty` executable. The Wahab module loads only after `container_env/0.1`, provides `crun angsd` version 0.941, and does not place a direct `angsd` command on `PATH`.
+- **Recovery:** Resume production session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`. RepeatModeler, RepeatMasker, and all other successful tasks should be reused from cache. `PREP_REFERENCE_REPEAT` and the canceled BWA tasks will rerun.
+- **Affected files:** `config/nf-trim-generode/nextflow.config` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-06 — RepeatMasker isolated after TRF memory failure
 
 - **Decision:** Exclude nodes `d1-w6420a-11` and `d6-w6420b-05` from every workflow process. Override `REPEAT_MASKER` to retain four CPUs, request 32 GB initially, use `--exclusive=user`, and retry once with 64 GB for memory-related exit codes.

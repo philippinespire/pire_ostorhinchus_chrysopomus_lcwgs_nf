@@ -12,6 +12,15 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-09-08 — Nextflow driver isolated from memory-starved nodes
+
+- **Decision:** Exclude nodes `d1-w6420a-11` and `d6-w6420b-05` from the Nextflow driver allocation and request `--exclusive=user` for the driver.
+- **Rationale:** Process-level `clusterOptions` protect child tasks but do not affect the outer SLURM job running Nextflow. Protecting the driver is necessary because it maintains workflow state, polls SLURM, and records completed tasks in the cache.
+- **Evidence:** Driver job `6778032` was assigned to `d6-w6420b-05` and failed after `09:02:55`. The Java runtime could not allocate 16 KiB of native memory and could not start `squeue`, both reporting `errno=12` (`Cannot allocate memory`). The driver used approximately 1.6 GB RSS, indicating node-wide memory exhaustion rather than excessive driver usage. `PREP_REFERENCE_REPEAT` job `6778033` completed successfully before the driver failed. Thirty-six BWA jobs remained active without a driver and were no longer active before recovery.
+- **Recovery:** Preserve the existing Nextflow work directory and cache, then resume production session `7e4b1069-96a8-4680-8bc9-3bab72e898c1`. Completed tasks, including `PREP_REFERENCE_REPEAT`, remain eligible for cache reuse; interrupted BWA tasks will restart.
+- **Affected files:** `workflows/01_nf_trim_generode/run_nf_trim_generode.sbatch` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-08 — Reference preparation switched from module ANGSD to Conda ANGSD
 
 - **Decision:** Override `PREP_REFERENCE_REPEAT` to disable its upstream `angsd/0.940` module directive and use the pipeline's existing Conda environment. Retain one CPU, increase the recorded memory request from 4 GB to 32 GB, and use user-level node isolation.

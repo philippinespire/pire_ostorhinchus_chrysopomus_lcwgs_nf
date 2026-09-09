@@ -1,4 +1,6 @@
 #!/bin/bash -l
+#SBATCH --exclude=d1-w6420a-11,d6-w6420b-05
+#SBATCH --exclusive=user
 #SBATCH --job-name=och_generode
 #SBATCH --partition=main
 #SBATCH --nodes=1

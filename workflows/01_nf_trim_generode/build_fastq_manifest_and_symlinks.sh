@@ -3,7 +3,7 @@
 set -euo pipefail
 umask 007
 
-och_repo="/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf"
+och_repo="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf"
 och_raw_base="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs"
 och_manifest="${och_repo}/manifests/fastq_manifest.tsv"
 och_symlink_dir="${och_repo}/data/symlinks"

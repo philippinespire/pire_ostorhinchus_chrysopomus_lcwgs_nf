@@ -1,7 +1,7 @@
-samplesheet: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/config/nf-trim-generode/samplesheet.csv"
-indir: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/symlinks"
+samplesheet: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/config/nf-trim-generode/samplesheet.csv"
+indir: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/symlinks"
 outdir: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs/GenErode_Och_GCA_049176735.1/results"
-reference: "/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1/GCA_049176735.1.fasta"
+reference: "/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1/GCA_049176735.1.fasta"
 
 historical_era: "historical"
 historical_mapper: "aln"

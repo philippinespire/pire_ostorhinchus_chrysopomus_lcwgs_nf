@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
 #SBATCH --time=06:00:00
-#SBATCH --output=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
-#SBATCH --error=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
+#SBATCH --output=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
+#SBATCH --error=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
 
 set -uo pipefail
 umask 007

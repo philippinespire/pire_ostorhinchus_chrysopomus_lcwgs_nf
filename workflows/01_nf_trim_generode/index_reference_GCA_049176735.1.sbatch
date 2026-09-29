@@ -5,13 +5,13 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16G
 #SBATCH --time=12:00:00
-#SBATCH --output=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
-#SBATCH --error=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
+#SBATCH --output=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
+#SBATCH --error=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
 
 set -euo pipefail
 umask 007
 
-och_reference_dir="/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1"
+och_reference_dir="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/data/reference/GCA_049176735.1"
 och_ref="GCA_049176735.1.fasta"
 och_dict="GCA_049176735.1.dict"
 

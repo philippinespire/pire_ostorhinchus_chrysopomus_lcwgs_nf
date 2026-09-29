@@ -8,14 +8,14 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
 #SBATCH --time=30-00:00:00
-#SBATCH --chdir=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf
-#SBATCH --output=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
-#SBATCH --error=/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
+#SBATCH --chdir=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf
+#SBATCH --output=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.out
+#SBATCH --error=/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf/logs/nf_trim_generode/%x-%j.err
 
 set -euo pipefail
 umask 007
 
-och_project_root="/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf"
+och_project_root="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf"
 och_pipeline_dir="${och_project_root}/nf-pipelines/nf-trim-generode"
 och_expected_pipeline_commit="7875891fc158ef55b35007fb298c2f2cd6ee600e"
 
@@ -150,15 +150,9 @@ echo "Reference: $och_reference"
 echo "Work directory: $och_work_dir"
 echo "Output directory: $och_output_dir"
 
-och_resume_target="${OCH_RESUME_TARGET:-}"
-och_resume_args=(-resume)
-
-if [[ -n "$och_resume_target" ]]; then
-    och_resume_args+=("$och_resume_target")
-    echo "Resume target: $och_resume_target"
-else
-    echo "Resume target: latest Nextflow session"
-fi
+och_resume_target="${OCH_RESUME_TARGET:-7e4b1069-96a8-4680-8bc9-3bab72e898c1}"
+och_resume_args=(-resume "$och_resume_target")
+echo "Resume target: $och_resume_target"
 
 nextflow -version
 conda --version

@@ -15,7 +15,11 @@
 set -euo pipefail
 umask 007
 
-och_project_root="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf"
+# The repository physically lives in /archive, but this compatibility
+# alias preserves the original Nextflow projectDir/input paths so completed
+# tasks from the production session remain resume-cache compatible.
+och_physical_root="/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf"
+och_project_root="/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf"
 och_pipeline_dir="${och_project_root}/nf-pipelines/nf-trim-generode"
 och_expected_pipeline_commit="7875891fc158ef55b35007fb298c2f2cd6ee600e"
 
@@ -39,6 +43,19 @@ och_miniconda="/home/tburris/miniconda3"
 echo "nf-trim-generode launcher started: $(date)"
 echo "Driver host: $(hostname)"
 echo "SLURM job: ${SLURM_JOB_ID:-not-set}"
+
+och_resolved_root=$(readlink -f "$och_project_root")
+
+if [[ "$och_resolved_root" != "$och_physical_root" ]]; then
+    echo "STOP: compatibility project path does not resolve to physical repo." >&2
+    echo "Compatibility: $och_project_root" >&2
+    echo "Resolved:      $och_resolved_root" >&2
+    echo "Expected:      $och_physical_root" >&2
+    exit 1
+fi
+
+echo "Physical repo: $och_physical_root"
+echo "Cache-compatible project path: $och_project_root"
 
 for och_file in \
     "${och_pipeline_dir}/main.nf" \

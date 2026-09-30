@@ -1,6 +1,6 @@
 # Analysis pipeline
 
-This document describes the intended pipeline. None of the stages below has been completed, and all methods and parameters remain subject to validation and documentation.
+This document describes the intended pipeline. Stage 1 has been configured and submitted, with run attempts and task-level evidence recorded in `decisions.md`. A successful completion of the full Stage 1 workflow is not established by the tracked files. Later stages remain planned; verify current logs and outputs before updating their status.
 
 ## 1. Read processing and mapping
 

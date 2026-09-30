@@ -2,7 +2,7 @@
 
 This repository documents the processing and analysis of low-coverage whole-genome sequencing (lcWGS) data from historical and contemporary *Ostorhinchus chrysopomus*. The project is designed to characterize population genomic change through time, with particular attention to population structure, genetic diversity, differentiation, relatedness, and candidate genomic signals of selection.
 
-> **Project status:** This is a newly initialized repository. No sequence processing, quality control, ANGSD analysis, downstream analysis, or selection testing has been completed yet. The current directories and empty files are placeholders for planned work and do not represent generated data or results.
+> **Tracked status:** Stage 1 is configured and has been submitted on Wahab. `docs/decisions.md` records reference indexing, input audits, failed Nextflow runs, and some successful child tasks. The repository does not yet document a successful completion of the full `nf-trim-generode` run. The ANGSD configurations, BAM lists, downstream entry points, and tracked results remain placeholders. Check current logs and outputs before reporting a newer status.
 
 ## Analysis overview
 
@@ -81,11 +81,9 @@ Paths and sample membership should be generated from metadata where possible rat
 
 ## Planned next steps
 
-1. Populate and validate `metadata/samples_master.csv`.
-2. Complete `config/paths.yaml` and the `nf-trim-generode` sample sheet and parameters.
-3. Document the reference genome and temporal matching rules in `docs/decisions.md`.
-4. Run `workflows/01_nf_trim_generode/` and review its logs.
-5. Complete BAM QC before generating the final BAM manifests.
-6. Run the ANGSD analyses, followed by the downstream workflows.
+1. Verify the current Stage 1 outcome against Nextflow and SLURM logs, reports, and expected outputs; record the result and exact run identifiers.
+2. Record sample-level QC and define the matched temporal inclusion rules in `metadata/samples_master.csv` and `docs/decisions.md`.
+3. Generate and validate the post-QC BAM manifests and ANGSD configurations before those stages run.
+4. Implement and document downstream scripts and entry points as each analysis begins.
 
 See [`docs/pipeline.md`](docs/pipeline.md) for a stage-by-stage description and [`docs/sample_tracking.md`](docs/sample_tracking.md) for sample-status conventions.

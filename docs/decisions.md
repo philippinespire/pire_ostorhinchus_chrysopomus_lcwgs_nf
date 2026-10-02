@@ -12,6 +12,38 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-10-01 — Species identity investigation documented without assigning species
+
+- **Decision:** Document `ATum005`, `ATum016`, `ATum017`, and `ATum031` as samples for species-identity follow-up. Do not identify them as *O. sealei* from ancestry clusters or treat the K=3 pattern as a verified third biological group.
+- **Rationale:** Museum adult/juvenile labels cannot yet be linked to individual ATum IDs. The preliminary COI/16S comparison has not established a diagnostic marker, and the ancestry and mitochondrial figures are not independently reproducible from inputs and scripts in this repository.
+- **Evidence:** `results/species_identity/README.md` and its two supplied figures record the observations, missing provenance, and interpretation limits. Commit `626fe22` added those three files; it did not run a new analysis.
+- **Affected files:** `results/species_identity/README.md`, `results/species_identity/figures/atum_ancestry_k2_k3.png`, `results/species_identity/figures/coi_cross_label_413bp.png`, and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
+### 2026-09-30 — Current workflow status and working rules documented
+
+- **Decision:** Replace outdated placeholder descriptions with the tracked Stage 1 configuration and sample counts. Describe Stage 1 as configured and submitted, without claiming that the full workflow completed. Add repository instructions for traceable analysis, output verification, and cautious biological interpretation.
+- **Rationale:** A submitted Nextflow run and successful child tasks do not establish an analysis-ready data set. The documentation must distinguish configured inputs, tracked decisions, and verified final outputs.
+- **Evidence:** Commits `6cec804` and `0b905b2` added `AGENTS.md` and revised the repository, configuration, metadata, manifest, workflow, log, report, and result READMEs. The tracked sample sheet and manifest contain 529 sequencing occurrences representing 278 fish; the post-QC BAM lists and ANGSD configurations remain placeholders.
+- **Affected files:** `AGENTS.md`, `README.md`, `docs/pipeline.md`, the updated directory READMEs, `config/nf-trim-generode/README.md`, and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
+### 2026-09-29 — Cache-compatible paths retained after repository move
+
+- **Decision:** Keep the physical repository under `/archive/carpenterlab/pire/pire_ostorhinchus_chrysopomus_lcwgs_nf` while using the `/home/tburris/pire_ostorhinchus_chrysopomus_lcwgs_nf` compatibility alias for the launcher's project and cache-sensitive input paths. Check that the alias resolves to the physical repository before running Nextflow.
+- **Rationale:** Changing the path strings used by the production session could prevent completed tasks from being reused on resume. The alias preserves those strings after the repository move.
+- **Evidence:** Commit `2de7e72` changed repository paths to `/archive`; commit `66bb412` restored the alias in `config/nf-trim-generode/params.yaml` and added a `readlink -f` check in the launcher. `config/paths.yaml` names the physical path and is not read directly by the launcher. These commits establish configuration intent; they do not by themselves verify cache reuse in a later run.
+- **Affected files:** `config/paths.yaml`, `config/nf-trim-generode/params.yaml`, `workflows/01_nf_trim_generode/run_nf_trim_generode.sbatch`, and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
+### 2026-09-29 — BAM_QC assigned the pipeline Conda environment
+
+- **Decision:** Override `BAM_QC` to disable its upstream container and use `${projectDir}/environment.yml`, with two CPUs and 8 GB of memory.
+- **Rationale:** The upstream Samtools container lacks `ps`, which Nextflow's task wrapper requires before the BAM_QC command starts. The pipeline Conda environment provides Samtools without that container launch.
+- **Evidence:** Commit `2de7e72` adds the `BAM_QC` override and records the container-wrapper failure in `config/nf-trim-generode/nextflow.config`. An earlier trace (`reports/nf_trim_generode/trace-6792076.txt` on Wahab) recorded one historical `BAM_QC` failure with exit code 1. The commit does not establish that BAM_QC later completed; check a subsequent task exit code, log, and QC output before reporting success.
+- **Affected files:** `config/nf-trim-generode/nextflow.config` and `docs/decisions.md`.
+- **Analyst:** `tburris`
+
 ### 2026-09-08 — Nextflow driver isolated from memory-starved nodes
 
 - **Decision:** Exclude nodes `d1-w6420a-11` and `d6-w6420b-05` from the Nextflow driver allocation and request `--exclusive=user` for the driver.

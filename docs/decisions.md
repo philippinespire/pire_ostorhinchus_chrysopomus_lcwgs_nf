@@ -12,6 +12,14 @@ Use this file to record decisions that affect reproducibility or biological inte
 - **Affected files:** Configurations, manifests, scripts, or results that changed.
 - **Analyst:** Name or initials.
 
+### 2026-11-10 — OchACan008 LH00328 historical PASS1 mapping resources increased
+
+- **Decision:** Request 16 CPUs and 96 GB for `BWA_MERGED_PASS1` on `OchACan008_Ex1-8A-lcwgs-1_RG-OchACan008-LH00328-276-22KKJLLT3-L2-8A-B1`. Other merged PASS1 mappings retain four CPUs and 32 GB on the first attempt, with 64 GB on retry.
+- **Rationale:** The historical LH00328 library was unusually slow with `bwa aln`. Limiting the override to its exact ID preserves the resource settings used by other mappings.
+- **Evidence:** Commit [`d5aff28`](https://github.com/philippinespire/pire_ostorhinchus_chrysopomus_lcwgs_nf/commit/d5aff2868a3ac492b6cd6e2bd1f65da030519131) adds the exact `sample_id` selector to the Stage 1 configuration.
+- **Affected files:** `config/nf-trim-generode/nextflow.config`.
+- **Analyst:** `tburris`
+
 ### 2026-10-01 — Species identity investigation documented without assigning species
 
 - **Decision:** Document `ATum005`, `ATum016`, `ATum017`, and `ATum031` as samples for species-identity follow-up. Do not identify them as *O. sealei* from ancestry clusters or treat the K=3 pattern as a verified third biological group.

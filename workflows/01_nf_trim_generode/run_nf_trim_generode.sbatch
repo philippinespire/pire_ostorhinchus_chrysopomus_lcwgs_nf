@@ -151,7 +151,8 @@ fi
 mkdir -p "$och_reports_dir"
 
 module purge
-module load nextflow/23.10.1
+module load nextflow/26.10.0
+export NXF_SYNTAX_PARSER=v1
 module list
 
 export PATH="${och_miniconda}/bin:${PATH}"

@@ -154,3 +154,13 @@ Use this file to record decisions that affect reproducibility or biological inte
 - Population group definitions.
 - Temporal-selection method and neutral null model.
 - Window size, step size, scaffold eligibility, and multiple-testing procedure.
+
+## 2026-11-28 — Nextflow recovery upgrade
+
+- **Decision:** Upgrade the GenErode production launcher to Nextflow 26.10.0 with the legacy parser (`NXF_SYNTAX_PARSER=v1`).
+- **Reason:** Nextflow 23.10.1 prematurely recognized existing task exit-status files during recovery.
+- **Recovery:** Driver 8161899 was retired after all 111 active processing jobs finished successfully.
+- **Audit:** All 85 premature-completion candidates and 100 additional realignment jobs passed initial completion and output-presence checks. Full output integrity remains under review.
+- **Validation:** Nextflow 26.10.0 successfully initialized the pinned workflow in an isolated preview. Production execution and cache reuse remain unverified.
+- **Preservation:** Retain the original session UUID, work directory, reference, parameters, samplesheet, and pinned pipeline code.
+- **Affected file:** `workflows/01_nf_trim_generode/run_nf_trim_generode.sbatch`
